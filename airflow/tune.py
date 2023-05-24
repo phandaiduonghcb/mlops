@@ -34,17 +34,19 @@ with DAG(dag_id="tune_dag",
 
     create_env_task = BashOperator(
         task_id="create_env_task",
-        bash_command="scripts/create_env",
+        bash_command="",
         retries=1,
     )
-
+    
     tune_command = """
-    source /opt/airflow/training_env/bin/activate
-    cd /opt/airflow/training_env/mlops/
-    python ./ml/hyp_tuning.py
+     source /opt/airflow/dags/training_env/bin/activate
+     cd /opt/airflow/dags/training_env/mlops/
+     python ./ml/hyp_tuning.py
     """
     tune_task = BashOperator(
         task_id="tune_task",
         bash_command=tune_command,
         retries=1,
     )
+
+    create_env_task >> tune_task
