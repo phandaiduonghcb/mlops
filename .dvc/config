@@ -1,0 +1,3 @@
+['remote "dvc-flower-bucket"']
+    url = s3://dvc-flower-bucket
+    profile = duongpd7
