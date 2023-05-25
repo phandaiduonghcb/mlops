@@ -40,8 +40,8 @@ with DAG(dag_id="tune_dag",
     )
 
     tune_task = BashOperator(
-        task_id=" bash -i /opt/airflow/dags/scripts/train.sh ",
-        bash_command=tune_command,
+        task_id="tune_task",
+        bash_command=" bash -i /opt/airflow/dags/scripts/train.sh ",
         retries=1,
     )
 

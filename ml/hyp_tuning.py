@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, os.path.dirname(__file__))
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
 import mlflow
 from mlflow.models.signature import infer_signature
