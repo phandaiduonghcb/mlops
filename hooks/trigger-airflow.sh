@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check that the commit is on the 'master' branch
-if [[ $(git rev-parse --abbrev-ref HEAD) != 'master' ]]; then
+if [[ $(git rev-parse --abbrev-ref HEAD) != 'main' ]]; then
     exit 0
 fi
 
@@ -14,8 +14,8 @@ fi
 # Send a POST request to the Airflow REST API to trigger the DAG
 # Remember to use basic_auth in airflow.cfg
 curl -X 'POST' \
-  --user "admin:admin" \
-  'http://0.0.0.0:8080/api/v1/dags/tune_dag/dagRuns' \
+  --user "airflow:airflow" \
+  'http://ec2-3-133-178-16.us-east-2.compute.amazonaws.com:8080/api/v1/dags/tune_dag/dagRuns' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
