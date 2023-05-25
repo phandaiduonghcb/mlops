@@ -4,5 +4,4 @@ ml/runs
 ml/data/__pycache__
 ml/__pycache__
 airflow/__pycache__
-test.py
 commands.txt
