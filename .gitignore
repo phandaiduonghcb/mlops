@@ -1,7 +1,6 @@
 .venv/
 mlruns/
-ml/runs
-ml/data/__pycache__
-ml/__pycache__
-airflow/__pycache__
+ml/runs/*
 commands.txt
+__pycache__
+./test.py

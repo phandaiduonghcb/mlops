@@ -1,12 +1,6 @@
 from __future__ import annotations
 import sys
 from pathlib import Path
-
-project_path = '/opt/airflow/mlops'
-
-if (project_path + '/ml') not in sys.path:
-    sys.path.insert(0, (project_path + '/ml'))  # add to PATH
-
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonVirtualenvOperator

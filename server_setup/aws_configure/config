@@ -1,0 +1,7 @@
+[profile duong]
+region = us-east-2
+output = json
+
+[profile duongpd7]
+region = us-east-2
+output = json

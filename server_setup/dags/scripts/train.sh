@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 conda activate training_env
 conda env list
 cd $HOME/conda/envs/training_env/mlops
