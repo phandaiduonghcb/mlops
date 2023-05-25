@@ -1,12 +1,14 @@
 import sys
+import os
+
 sys.path.insert(0, os.path.dirname(__file__))
+
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
 import mlflow
 from mlflow.models.signature import infer_signature
 import hyperopt
 import pandas as pd
 from datetime import datetime
-import os
 import json
 import git
 import torch
