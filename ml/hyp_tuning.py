@@ -125,7 +125,7 @@ def objective(kwargs):
 def get_search_space():
     space = {
             'learning_rate': hp.uniform('lr',0.0001,0.001),
-            'batch_size': hp.uniformint('batch_size',16,64),
+            'batch_size': hp.uniformint('batch_size',8,24),
             },
     return space
 
