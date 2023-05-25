@@ -9,6 +9,7 @@ if (project_path + '/ml') not in sys.path:
 
 from airflow import DAG
 from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonVirtualenvOperator
 from datetime import datetime, timedelta
 import os
 
@@ -34,17 +35,12 @@ with DAG(dag_id="tune_dag",
 
     create_env_task = BashOperator(
         task_id="create_env_task",
-        bash_command="",
+        bash_command=" bash -i /opt/airflow/dags/scripts/create_env.sh ",
         retries=1,
     )
-    
-    tune_command = """
-     source /opt/airflow/dags/training_env/bin/activate
-     cd /opt/airflow/dags/training_env/mlops/
-     python ./ml/hyp_tuning.py
-    """
+
     tune_task = BashOperator(
-        task_id="tune_task",
+        task_id=" bash -i /opt/airflow/dags/scripts/train.sh ",
         bash_command=tune_command,
         retries=1,
     )

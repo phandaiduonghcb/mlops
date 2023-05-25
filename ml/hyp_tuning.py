@@ -11,11 +11,9 @@ import torch
 from torchvision import transforms
 import numpy as np
 # from torchvision.io import read_image
-repo = git.Repo('/media/duong/DATA/Workspace/AWS/MLops/.git')
+print("Current working directory: ", )
+repo = git.Repo(f'{os.getcwd()}/.git')
 sha_commit = repo.head.object.hexsha
-print("Current working directory: ",os.getcwd() )
-
-
 
 from copy import deepcopy
 from utils import Params, flatten_dict
@@ -97,7 +95,7 @@ def objective(kwargs):
             artifact_path="model",
             registered_model_name=f"classification_models",
             # signature=signature,
-            pip_requirements=['-r /media/duong/DATA/Workspace/AWS/MLops/requirements.txt']
+            pip_requirements=[f'-r {os.getcwd()}/requirements.txt']
         )
 
         # Get highest sharpe
@@ -146,6 +144,6 @@ def run_hyperparameter_tuning():
     # trials.trials[0]['misc']['vals']
     return best, trials
 
-configs = Params('/media/duong/DATA/Workspace/AWS/MLops/ml/configs/configs.json')
+configs = Params(f'{os.getcwd()}/ml/configs/configs.json')
 start_timestamp = round(datetime.timestamp(datetime.now()))
 run_hyperparameter_tuning()
