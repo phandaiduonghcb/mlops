@@ -1,7 +1,8 @@
 import sys
 import os
-
-sys.path.insert(0, os.path.dirname(__file__))
+if os.path.dirname(__file__) not in sys.path:
+    sys.path.insert(0, )
+print(sys.path)
 
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
 import mlflow
