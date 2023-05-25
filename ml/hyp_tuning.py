@@ -1,7 +1,7 @@
 import sys
 import os
 if os.path.dirname(__file__) not in sys.path:
-    sys.path.insert(0, )
+    sys.path.insert(0, os.path.dirname(__file__))
 print(sys.path)
 
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
