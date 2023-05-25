@@ -15,8 +15,8 @@ jobs:
       - name: List files in the repository and trigger airflow
         run: |
           ls ${{ github.workspace }}
-          chmod +x ./hooks/trigger-airflow.sh
-          ./hooks/trigger-airflow.sh
+          chmod +x ${{ github.workspace }}/hooks/trigger-airflow.sh
+          ${{ github.workspace }}/hooks/trigger-airflow.sh
         shell: bash
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
