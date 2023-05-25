@@ -29,6 +29,7 @@ import numpy as np
 from model import build_model
 
 experiment_name = "classification_runs"
+mlflow.set_tracking_uri('file:///opt/airflow/mlruns')
 mlflow.set_experiment(experiment_name)
 
 import mlflow
