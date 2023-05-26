@@ -1,13 +1,13 @@
 {
     "train": {
-        "result_path": "/home/airflow/conda/envs/training_env/mlops/ml/runs/test",
+        "result_path": "/opt/airflow/runs/test",
         "model_filename": "model",
         "epochs": 1,
         "learning_rate": 0.00025,
         "device": "cpu"
     },
     "test": {
-        "model_path": "/home/airflow/conda/envs/training_env/mlops/ml/runs/test/best.pth"
+        "model_path": "/opt/airflow/runs/test/best.pth"
     },
     "data": {
         "train_data_path": "/home/airflow/conda/envs/training_env/mlops/ml/data/train",
