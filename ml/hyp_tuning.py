@@ -87,7 +87,7 @@ def objective(kwargs):
         
         mlflow.set_tag('commit_sha', sha_commit)
         mlflow.log_artifact(os.path.join(result_path,'configs.json'))
-        mlflow.log_artifact(os.path.join(result_path,'best.pt'))
+        mlflow.log_artifact(os.path.join(result_path,'best.pth'))
         mlflow.log_params(flatten_dict(temp_config_dict))
 
         model_wrapper = ClassificationModelWrapper(temp_config_params.test.model_path, temp_config_params)
