@@ -2,7 +2,7 @@ FROM apache/airflow:2.6.1-python3.10
 USER root
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-         git zip unzip wget\
+         git zip unzip wget jq\
   && apt-get autoremove -yqq --purge \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
