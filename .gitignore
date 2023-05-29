@@ -4,3 +4,4 @@ ml/runs/*
 commands.txt
 __pycache__
 ./test.py
+.fuse*

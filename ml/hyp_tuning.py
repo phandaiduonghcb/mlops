@@ -16,7 +16,8 @@ import torch
 from torchvision import transforms
 import numpy as np
 # from torchvision.io import read_image
-print("Current working directory: ", )
+
+
 repo = git.Repo(f'{os.getcwd()}/.git')
 sha_commit = repo.head.object.hexsha
 
