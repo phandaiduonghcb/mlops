@@ -106,79 +106,65 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Through this guide, I will try to explain how can I use AWS services and some tools to create an MLOPs pipeline that will be triggered to train and deploy everytime the latest commit whose message contains "Airflow" term is pushed.
+### Classification problem
+A resnet18 neural network will be used for image classification. The dataset will be put into `./ml/data/train`, `./ml/data/valid`, `./ml/data/test`.
+The configuration file for training, testing will be put into `./ml/configs`.
+I take the [flower dataset](https://public.roboflow.com/classification/flowers_classification/2) as an example for this project.
 
-### Prerequisites
+### Code and Data versioning
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+DVC is used for data versioning and GIT is used for code versioning. Data cache will be stored in a S3 remote storage.
+
+* Install DVC:
   ```sh
-  npm install npm@latest -g
+    pip install dvc
+    pip install dvc-s3
   ```
 
-### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/phandaiduonghcb/mlops.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+* Use DVC to track your data. Remember to setup AWS credentials using `./server_setup/aws_config` and copy all files in that folder to `~/.aws/`
+  ```sh
+    dvc add ml/data/*
+    git add data/*
+    git commit -m "Add raw data" # Git tracks the metadata of the dataset
+    dvc remote add dvc-flower-bucket s3://dvc-flower-bucket # created s3 bucket for storing data cache
+    dvc remote modify dvc-flower-bucket profile duongpd7
+    dvc push -r dvc-flower-bucket
+  ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Setup an EC2 server
+Airflow, MLflow will be installed on an EC2 server.
+Here are ports that are used in EC2:
+- 8080: Airflow
+- 1234: Mlflow tracking server
+- 4321: deployed endpoint url
+- 6000: used to trigger deployment process when there is an model put to s3.
+* Create working directory and prepare folders for volume mounting. After creating folders, copy **files** in `server_setup/`:
+  ```sh
+    mkdir workspace # Store logs, models, artifacts created by Airflow and Mlflow
+    mkdir deployment # Build and run deployment docker image
+    cd workspace
+    mkdir -p ./dags ./logs ./plugins ./config ./mlruns ./training_runs # Have to create manually to avoid permission issue.
+  ```
+* Now run airflow server and mlflow server using docker compose:
+  ```sh
+    echo -e "AIRFLOW_UID=$(id -u)" > .env
+    docker compose up
+  ```
 
+* Setup port 6000 to listening for request sent by from lambda triggered by S3.
+  ```sh
+    xinetd-deployment-trigger
+    apt install xinetd
+    # After install xinetd, copy server_setup/scripts/xinetd-deployment-trigger to /etc/xinetd.d/ and modify the its "server" path to server_setup/scripts/trigger-deployment.sh placed on EC2.
+    systemctl start xinetd
+    systemctl enable xinetd
 
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/phandaiduonghcb/mlops/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+  ```
+### Setup S3 - Lambda for triggering
+S3 is configured to trigger lambda function whenever a model.zip file is put into it. The lambda function will send a request to the EC2 server at port 6000 to tell it to rebuild and deploy the model uploaded.
+The lambda function should be created from docker image. Source is stored at `deployment/lambda`. The `app.py` file should be modified for the correct url of the EC2.
 
 <!-- LICENSE -->
 ## License

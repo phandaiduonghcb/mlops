@@ -1,0 +1,13 @@
+service x11
+{
+    socket_type = stream
+    protocol = tcp
+    user = ubuntu
+    wait = no
+    log_on_failure += USERID
+    log_on_success += PID
+    port = 6000
+
+    # Path to your custom scripts
+    server = /home/ubuntu/trigger-deployment.sh
+}
