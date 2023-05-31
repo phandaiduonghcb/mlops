@@ -39,4 +39,9 @@ with DAG(dag_id="tune_dag",
         retries=1,
     )
 
-    create_env_task >> tune_task
+    deploy_task = BashOperator(
+        task_id="deploy_task",
+        bash_command=" bash -i /opt/airflow/dags/scripts/deploy.sh ",
+        retries=1,
+    )
+    create_env_task >> tune_task >> deploy_task
