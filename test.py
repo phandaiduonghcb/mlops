@@ -4,7 +4,7 @@ import numpy as np
 import mlflow
 import logging
 from torchvision.io import read_image
-# Define the input tensor
+# Define the input tensor 
 image = read_image('/media/duong/DATA/Workspace/AWS/MLops/ml/data/train/daisy/5794835_d15905c7c8_n_jpg.rf.9bd0ab510957d17519330fcf1e755d14.jpg')
 input_tensor = image.numpy().astype(np.float32).tolist()
 
